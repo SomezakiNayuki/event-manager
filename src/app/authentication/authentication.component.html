@@ -1,0 +1,187 @@
+<!-- login modal -->
+<div class="modal fade" id="LoginModal">
+  
+  <div class="modal-dialog-box">
+    
+    <div class="modal-columns-layout">
+
+      <div class="modal-column header-column">
+        
+        <em-modal-cloud-graphic></em-modal-cloud-graphic>
+
+        <button class="close-button" (click)="closeLoginModal()">
+          ✕
+        </button>
+
+        <h1>Welcome back!</h1>
+        <h3>Let's find the event of your dreams.</h3>
+      </div>
+
+      <!-- ACCOUNT TYPE SCREEN (1) -->
+      <div class="modal-column" *ngIf="accountTypeScreenLogin">
+
+        <div class="form-selection-title">Choose an account type to start creating an account</div>
+
+        <br/>
+
+        <div class="account-type-button" id="attendee" value="customer" (click)="selectAccountTypeLogin('customer')">
+          Event Attendee
+        </div>
+
+        <div class="account-type-button" id="host" value="host" (click)="selectAccountTypeLogin('host')">
+          Event Host
+        </div>
+
+        <br/>
+        
+      </div>
+
+
+      <!-- USERNAME AND PASSWORD SCREEN (2) -->
+      <div class="modal-column" *ngIf="credentialScreenLogin">
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Username" [(ngModel)]="usernameLogin">
+        </div>
+        <div class="error-text" *ngIf="invalidUsernameLogin"><i class="exclamation circle icon"></i>Must be a valid username or email address</div>
+
+        <br/>
+        
+        <div class="ui fluid input icon">
+          <input type="password" placeholder="Password" [(ngModel)]="passwordLogin">
+        </div>
+
+        <br/>
+
+        <button class="ui blue button" (click)="login()">Login</button>
+        <div class="failure-text" *ngIf="loginFailed">
+          <i class="exclamation circle icon"> </i>Incorrect username or password
+        </div>
+
+      </div>
+    
+    </div>
+    
+  </div>
+
+</div>
+
+
+<!-- REGISTER MODAL -->
+<div class="modal fade" id="RegisterModal">
+
+  <div class="modal-dialog-box">
+
+    <div class="modal-columns-layout">
+
+      <div class="modal-column header-column">
+        
+        <em-modal-cloud-graphic></em-modal-cloud-graphic>
+
+        <button class="close-button" (click)="closeRegisterDialog()">
+          ✕
+        </button>
+
+        <h1>Welcome to Dream Events</h1>
+        <h3>Browse and build the events of your dreams.</h3>
+      </div>
+
+
+      <!-- ACCOUNT TYPE SCREEN (1) -->
+      <div class="modal-column" *ngIf="accountTypeScreen">
+
+        <div class="form-selection-title">Choose an account type to start creating an account</div>
+
+          <br/>
+
+          <div class="account-type-button" id="attendee" value="customer" (click)="selectAccountTypeRegister('customer')">
+            Event Attendee
+          </div>
+
+          <div class="account-type-button" id="host" value="host" (click)="selectAccountTypeRegister('host')">
+            Event Host
+          </div>
+
+          <br/>
+
+      </div>
+
+
+      <!-- CREDENTIAL SCREEN (2) -->
+      <div class="modal-column" *ngIf="credentialScreen">
+
+        <p class="form-selection-title">Enter your name</p>
+
+        <div class="ui fluid input icon">
+          <input class="inputField" type="text" placeholder="First name" [(ngModel)]="firstNameRegister">
+        </div>
+        <div class="error-text" *ngIf="invalidFirstName"><i class="exclamation circle icon"></i>Must contain
+          only upper and lower-case letters</div>
+
+        <br/>
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Last name" [(ngModel)]="lastNameRegister">
+        </div>
+        <div class="error-text" *ngIf="invalidLastName"><i class="exclamation circle icon"></i>Must contain
+          only upper and lower-case letters</div>
+
+        <p class="form-selection-title">Choose a username</p>
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Username" ng-pattern="/^[a-zA-Z]*$/" [(ngModel)]="usernameRegister">
+        </div>
+        <div class="error-text" *ngIf="invalidUsernameRegister"><i class="exclamation circle icon"></i>Must contain
+          only letters and numbers</div>
+
+        <p class="form-selection-title">Enter your email</p>
+
+        <div class="ui fluid input icon">
+          <input type="email" placeholder="Email" [(ngModel)]="emailRegister">
+        </div>
+        <div class="error-text" *ngIf="invalidEmail"><i class="exclamation circle icon"></i>Invalid email
+        </div>
+        
+        <br>
+
+        <button class="ui grey button" (click)="registerDetails()">Continue</button>
+
+      </div>
+
+
+      <!-- PASSWORD SCREEN (3) -->
+      <div class="modal-column" *ngIf="passwordScreen">
+
+        <p class="form-selection-title">Create a password</p>
+
+        <div class="ui fluid input icon">
+          <input type="password" placeholder="Password" [(ngModel)]="passwordRegister">
+        </div>
+        <div class="error-text" *ngIf="invalidPassword"><i class="exclamation circle icon"></i>Must be at
+          least 6 characters with one upper and lower-case letter, number, and special character</div>
+
+        <br/>
+
+        <div class="ui fluid input icon">
+          <input type="password" placeholder="Confirm password" [(ngModel)]="passwordRegisterComfirmation">
+        </div>
+        <div class="error-text" *ngIf="invalidPasswordConfirmation"><i
+            class="exclamation circle icon"></i>Passwords do not match
+        </div>
+
+        <br/>
+        
+        <button class="ui blue button" (click)="register()">Register</button>
+
+        <div class="failure-text" *ngIf="RegisterFailed">
+          <i class="exclamation circle icon"> </i>Username already in use!
+        </div>
+
+      </div>
+  
+
+    </div>
+
+  </div>
+
+</div>

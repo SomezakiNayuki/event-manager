@@ -1,0 +1,121 @@
+.host-hub-header-text {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  letter-spacing: 4px;
+  font-weight: bold;
+  align-self: center;
+  margin: 0px 10px;
+  width: min-content;
+}
+
+.nav-bar-container {
+  position: fixed;
+  z-index: 2;
+  padding: 10px 2%;
+  border-radius: 25px;
+  transition: 0.4s;
+  box-shadow: 0px -30px 60px 70px white;
+  width: 97%;
+  margin: 20px 1.5%;
+}
+
+.nav-bar-container:hover {
+  border: solid 1px black;
+}
+
+.host {
+  border: solid 1px #ffd08e;
+  background: linear-gradient(90deg, rgba(0,0,0,1) 13%, rgba(226,121,56,1) 37%, rgba(255,255,255,1) 100%);
+}
+
+.customer {
+  background-color: white;
+  border: solid 1px lightgray;
+}
+
+.logo-container {
+  height: 50px;
+  padding: 10px;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+.mobile-nav {
+  height: 100%;
+  background-color: white;
+  position: fixed;
+  z-index: 2;
+  width: auto;
+  padding: 20px;
+  box-shadow: 0px 0px 300px 100px #e6e6e6;
+
+  animation-name: slide-left;
+  animation-duration: 0.3s;
+}
+
+.item {
+  animation-name: grow;
+  animation-duration: 0.3s;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 950px) {
+  #desktop-menu {
+    display: none;
+  }
+  #mobile-menu {
+    display: inline;
+  }
+
+  .nav-bar-container {
+    margin: 0px 0px;
+    border-radius: 0px;
+    width: 100%;
+    padding: 20px 1.5%;
+    background-color: rgb(242, 242, 242);
+    border: none;
+  }
+
+  .nav-bar-container:hover {
+    border: none;
+    border-bottom: solid 0.5px gray;
+  }
+}
+
+@media screen and (min-width: 950px) {
+  #desktop-menu {
+    display: div;
+  }
+  #mobile-menu {
+    display: none;
+  }
+  .mobile-nav {
+    display: none;
+  }
+}
+
+footer {
+  font-size: 12px;
+  margin-top: 100px;
+  padding: 25px;
+  text-align: center;
+  border-top: solid 1px #e4e4e4;
+  width: 100%;
+  color: #828282;
+  background: linear-gradient(180deg, rgb(220, 220, 220) 10%, rgb(255, 255, 255) 100%);
+}
+
+.footer-subtext {
+  font-size: 10px;
+}

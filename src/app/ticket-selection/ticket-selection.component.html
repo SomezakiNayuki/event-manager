@@ -1,0 +1,189 @@
+<!-- PAYMENT MODAL -->
+<div *ngIf="isPaymentModalForPurchaseScreen">
+
+  <div class="modal-dialog-box">
+
+    <div class="modal-columns-layout">
+
+      <div class="modal-column header-column">
+
+        <em-modal-cloud-graphic></em-modal-cloud-graphic>
+
+        <button class="close-button" (click)="closePaymentModal()">
+          ✕
+        </button>
+
+        <h1>Enter your payment details and pay</h1>
+      </div>
+
+      <!-- PAYMENT DETAILS -->
+      <div class="modal-column">
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Card Number" [(ngModel)]="cardNumber">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>16 digits number
+          required and should not be empty</div>
+
+        <br />
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Name on Card" [(ngModel)]="name">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>Must be a valid
+          name</div>
+
+        <br />
+
+        <div class="ui fluid input icon">
+          <input type="date" placeholder="Expiry Date" [(ngModel)]="expiryDate">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>Cannot be empty
+          and not expired</div>
+
+        <br />
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="CVV" [(ngModel)]="cvv">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>3 digits number
+          required and should not be empty</div>
+
+        <br />
+
+        <button class="ui blue button" (click)="pay()">Submit</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SEAT UI -->
+<div class="tickets-screen">
+
+  <div class="ticket-map">
+    <div *ngFor="let ticket of event.tickets" id="ticket.id">
+      <div>
+
+        <!-- BOOKING (1) -->
+        <div *ngIf="ticket.status === 'available' && bookTicketScreen" (click)="chooseTicket(ticket)">
+          <div class="seat available interactive" *ngIf="chosenTicket == undefined || chosenTicket.id != ticket.id">
+            {{ticket.seatRow}}
+            {{ticket.seatNumber}}
+          </div>
+          <div class="chosen-seat" *ngIf="chosenTicket !== undefined && chosenTicket.id == ticket.id">
+            <i class="check icon"></i>
+          </div>
+        </div>
+
+        <!-- RESERVING (2) -->
+        <div *ngIf="ticket.status === 'available' && reserveTicketScreen">
+          <div class="seat available interactive" (click)="chooseReserveTicket(ticket)"
+            *ngIf="chosenTicket.id != ticket.id && !reservedTickets.includes(ticket.id)">
+            {{ticket.seatRow}}
+            {{ticket.seatNumber}}
+          </div>
+
+          <div class="chosen-seat" *ngIf="chosenTicket.id == ticket.id">
+            <i class="check icon"></i>
+          </div>
+
+          <div class="reserved-seat" *ngIf="reservedTickets.includes(ticket.id)">
+            <i class="lock icon"></i>
+          </div>
+        </div>
+
+        <!-- CONFIRMING (3) -->
+        <div *ngIf="ticket.status === 'available' && !reserveTicketScreen && !bookTicketScreen">
+          <div class="seat available" *ngIf="chosenTicket.id != ticket.id && !reservedTickets.includes(ticket.id)">
+            {{ticket.seatRow}}
+            {{ticket.seatNumber}}
+          </div>
+
+          <div class="chosen-seat" *ngIf="chosenTicket.id == ticket.id">
+            <i class="check icon"></i>
+          </div>
+
+          <div class="reserved-seat" *ngIf="reservedTickets.includes(ticket.id)">
+            <i class="lock icon"></i>
+          </div>
+        </div>
+
+        <!-- BOOKED -->
+        <div class="seat booked" *ngIf="ticket.status === 'booked'">
+          {{ticket.seatRow}}
+          {{ticket.seatNumber}}
+        </div>
+
+        <!-- RESERVED -->
+        <div class="seat reserved" *ngIf="ticket.status === 'reserved'">
+          {{ticket.seatRow}}
+          {{ticket.seatNumber}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING TICKET (1) -->
+  <div class="ticket-screen-column" *ngIf="bookTicketScreen">
+    <h1>1. Select your seat.</h1>
+    <h2>Click a seat on the map to select it.</h2>
+    <h2>Tickets are ${{event.ticketPrice}} each</h2>
+
+    <br /><br /><br /><br /><br /><br />
+
+    <div *ngIf="chosenTicket !== undefined">
+      <button class="ui big orange fluid button" (click)="submitBookChoice()">Continue</button>
+    </div>
+  </div>
+
+  <!-- RESERVING TICKETS (2) -->
+  <div class="ticket-screen-column" *ngIf="reserveTicketScreen">
+    <h1>2. Reserve a seat for a friend (optional)</h1>
+    <h2>Click a seat on the map to select it, and enter the username of the friend below.</h2>
+    <h3>You'll be charged a small upfront reservation fee for each reserved seat, reservations last 15 minutes.</h3>
+    <br />
+    <div class="ui input icon reserve-field">
+      <input type="text" placeholder="Type in your friend's username here (Optional)" [(ngModel)]="friendUsername">
+    </div>
+    <br /><br /><br /><br /><br /><br />
+    <button class="ui big orange fluid button" (click)="submitReserveChoice()">Continue</button>
+  </div>
+
+  <!-- CONFIRMING SELECTION (3) -->
+  <div class="ticket-screen-column" *ngIf="confirmationScreen">
+    <h1>3. Confirm your selection:</h1>
+
+    <div class="confirmation-box">
+        <h3>Your seat: <span class="detail">${{event.ticketPrice}}</span></h3>
+        <div class="chosen-seat-pill">{{chosenTicket.seatRow}} {{chosenTicket.seatNumber}}</div>
+    </div>
+
+    <div class="confirmation-box" *ngIf="reservedTickets.length != 0">
+        <h3>Your reserved seat (assigned to <span class="detail">
+            <i class="user icon"></i>
+            {{friendUsername}}
+        </span>): <span class="detail">$5</span></h3>
+        <div class="reserved-seat-pill">ID: {{reservedTickets.at(0)}}</div>
+    </div>
+
+    <br /><br /><br />
+    <button class="ui big orange fluid button" (click)="openPaymentModal()">Confirm</button>
+  </div>
+
+  <!-- SUCCESS SCREEN (4) -->
+  <div class="ticket-screen-column" *ngIf="!bookTicketScreen && !reserveTicketScreen && !confirmationScreen">
+    <div class="ui red message" *ngIf="isReserveFailed" (click)="readErrorMessage()">Reservation failed, username not
+      exist! Your reservation and its payment will not be proceeded (click to dismiss)</div>
+    <h1>All done!</h1>
+    <h3>Enjoy the show</h3>
+    <br /><br /><br /><br /><br /><br />
+    <i class="massive green check icon check-middle"></i>
+  </div>
+
+</div>

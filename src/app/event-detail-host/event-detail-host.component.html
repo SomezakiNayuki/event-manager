@@ -1,0 +1,54 @@
+<div class="event-details-container">
+
+    <div class="event-details-header">
+
+        <div class="event-type-icon-container">
+            <em-event-type-icon [type]="event.type"></em-event-type-icon>
+        </div>
+
+        <div>
+            <h1>{{event.name}}</h1>
+            <div class="detail-label">{{event.description}}</div>
+        </div>
+
+    </div>
+
+    <div class="ui divider"></div>
+
+    <div class="details-columns-layout">
+        <div class="details-column">
+            <div class="detail-label">Event start date</div>
+            <div class="detail-text">{{event.startDateTime.split('T')[0].replace('-', '/').replace('-', '/')}}</div>
+
+            <div class="detail-label">Event start time</div>
+            <div class="detail-text">{{event.startDateTime.split('T')[1].slice(0, -3)}}</div>
+
+            <div class="detail-label">Event end date</div>
+            <div class="detail-text">{{event.endDateTime.split('T')[0].replace('-', '/').replace('-', '/')}}</div>
+
+            <div class="detail-label">Event end time</div>
+            <div class="detail-text">{{event.endDateTime.split('T')[1].slice(0, -3)}}</div>
+
+            <div class="detail-label">Ticket price</div>
+            <div class="detail-text">${{event.ticketPrice}}</div>
+        </div>
+
+        <div class="details-column">
+            <div class="detail-label">Event type</div>
+            <div class="detail-text">{{event.type.toUpperCase()}}</div>
+
+            <div class="detail-label">Artist</div>
+            <div class="detail-text">{{event.artist}}</div>
+
+            <div class="detail-label">Venue name</div>
+            <div class="detail-text">{{event.venue}}</div>
+
+            <div class="detail-label">Venue address</div>
+            <div class="detail-text">{{event.address}}</div>
+
+            <div class="detail-label">Tickets left</div>
+            <div class="detail-text">{{event.availableTickets}}</div>
+        </div>
+    </div>
+
+  </div>

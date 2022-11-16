@@ -1,0 +1,116 @@
+<div class="ui container">
+  <h1>My Tickets</h1>
+    <div class="ui active loader"></div>
+    <div *ngIf="bookedTicketsInformation.length != 0">
+    <div class="ui red message" *ngIf="isCancelTicketFailed" (click)="readErrorMessage()">Cannot cancel ticket within 7 days (click to dismiss)</div>
+    
+    <div *ngFor="let info of bookedTicketsInformation" class="ui cards">
+      <div class="ticket-box" *ngIf="!isPastEvent(info.event)">
+        <div class="content">
+          <div class="header">
+            <p><i style="font-size: 30px;" class="ticket alternate icon"></i><b style="color: black;font-size: 25px;"> {{info.event.name}}</b></p>
+          </div>
+          <div class="meta">
+            Ticket id: {{info.ticket.id}}
+          </div>
+          <div class="description">
+            <p>Ticket price: {{info.ticket.price}}</p>
+            <p>Seat row: {{info.ticket.seatRow}}</p>
+            <p>Seat number: {{info.ticket.seatNumber}}</p>
+            <p>Starting date and time: {{info.event.startDateTime.split('T')[0] + ' ' + info.event.startDateTime.split('T')[1].slice(0, -3)}}</p>
+            <p *ngIf="info.ticket.status === 'reserved'">Time remaining before reservation expired: {{getExpiryRemainingTime(info.ticket)}}</p>
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="ui two buttons">
+            <button class="ui basic red button" *ngIf="!isPastEvent(info.event)" (click)="cancelTicket(info.ticket)">Cancel</button>
+            <button class="ui basic teal button" *ngIf="info.ticket.status === 'reserved'" (click)="payTicket(info.ticket)">Pay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <h1>My Past Tickets</h1>
+  <div class="ui active loader"></div>
+  <div *ngIf="bookedTicketsInformation.length != 0">
+    <div *ngFor="let info of bookedTicketsInformation" class="ui cards">
+      <div class="ticket-box" *ngIf="isPastEvent(info.event)">
+        <div class="content">
+          <div class="header">
+            <p><i style="font-size: 30px;" class="ticket alternate icon"></i><b style="color: black;font-size: 25px;"> {{info.event.name}}</b></p>
+          </div>
+          <div class="meta">
+            Ticket id: {{info.ticket.id}}
+          </div>
+          <div class="description">
+            <p>Ticket price: {{info.ticket.price}}</p>
+            <p>Seat row: {{info.ticket.seatRow}}</p>
+            <p>Seat number: {{info.ticket.seatNumber}}</p>
+            <p>Ended at: {{info.event.endDateTime.split('T')[0] + ' ' + info.event.endDateTime.split('T')[1].slice(0, -3)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal fade" id="PaymentModal">
+
+  <div class="modal-dialog-box">
+
+    <div class="modal-columns-layout">
+
+      <div class="modal-column header-column">
+
+        <em-modal-cloud-graphic></em-modal-cloud-graphic>
+
+        <button class="close-button" (click)="closePaymentModal()">
+          ✕
+        </button>
+
+        <h1>Enter your payment details and pay</h1>
+      </div>
+
+      <!-- PAYMENT DETAILS -->
+      <div class="modal-column">
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Card Number" [(ngModel)]="cardNumber">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>16 digits number required and should not be empty</div>
+
+        <br/>
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="Name on Card" [(ngModel)]="name">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>Must be a valid name</div>
+
+        <br/>
+
+        <div class="ui fluid input icon">
+          <input type="date" placeholder="Expiry Date" [(ngModel)]="expiryDate">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>Cannot be empty and not expired</div>
+
+        <br/>
+
+        <div class="ui fluid input icon">
+          <input type="text" placeholder="CVV" [(ngModel)]="cvv">
+        </div>
+        <div class="error-text" *ngIf="!isCreditCardFieldsValid"><i class="exclamation circle icon"></i>3 digits number required and should not be empty</div>
+
+        <br/>
+
+        <button class="ui blue button" (click)="pay()">Submit</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

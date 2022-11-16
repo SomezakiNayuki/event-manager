@@ -1,0 +1,88 @@
+@import "../app.component.css";
+
+.username-text {
+    color: rgb(79, 79, 79);
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 35px;
+    border: solid 1px #d5d5d5;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 60px;
+}
+
+.browse-category {
+    width: 100%;
+    padding-bottom: 60px;
+
+    animation: slide-up;
+    animation-duration: 0.4s;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar {
+    margin: 50px;
+    height: 5px;
+    width: 100%;
+}
+
+.events-row {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 900px) {
+    .event-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .header-row {
+        font-size: 30px;
+    }
+
+    .username-text {
+        font-size: 28px;
+    }
+}
+
+.recommend-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.refresh-button {
+    border-radius: 100px;
+    background-color:white;
+    color:rgb(0, 0, 0);
+    font-weight: bold;
+    border: none;
+    text-align: center;
+    padding: 20px;
+    transition: 0.4s;
+    box-shadow: 0px 20px 50px #ffe1b8;
+}
+
+.refresh-button:hover {
+    background-color:rgb(60, 60, 60);
+    color: white;
+    cursor: pointer;
+}
+
+.graphic {
+    position: fixed;
+    margin-left: 10%;
+    margin-top: 8%;
+    scale: 200%;
+}

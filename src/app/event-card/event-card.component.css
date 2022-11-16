@@ -1,0 +1,66 @@
+@import "../app.component.css";
+
+.event-card {
+    background-color: #ffefe6;
+    height: min-content;
+    width: 275px;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    gap: 30px;
+    border: solid 1px #ffd2b8;
+}
+
+.event-card:hover {
+    background-color: rgba(226,121,56,1);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.event-type-icon {
+    height: 150px;
+    width: 100%;
+    padding-top: 65px;
+    margin-bottom: 10px;
+
+    text-align: center;
+    font-size: 60px;
+
+    background: linear-gradient(180deg, rgba(116,44,0,1) 0%, rgba(226,121,56,1) 43%, #ffe3d3 100%);
+    color: rgb(255, 255, 255);
+
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0px 20px 50px #ffce8a;
+}
+
+.datetime-text {
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 50%;
+    margin-top: 5px;
+}
+
+.datetime-title {
+    font-size: 15px;
+    font-weight: bold;
+    opacity: 70%;
+}
+
+.host-name {
+    background: #ffe2d2;
+    color: rgb(75, 75, 75);
+    border-radius: 7.5px;
+    padding: 5px 7.5px;
+    font-weight: bold;
+}
+
+.tickets-left-text {
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    opacity: 50%;
+    font-size: 15px;
+    margin: -15px;
+    text-align: center;
+    transform: translateY(-100%);
+}

@@ -1,0 +1,279 @@
+@import url('https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css');
+
+/******************************************************************************************/
+
+/* GENERAL STYLES */
+
+footer {
+    font-size: 12px;
+    margin-top: 100px;
+    padding: 25px;
+    text-align: center;
+    border-top: solid 1px #e4e4e4;
+    width: 100%;
+    color: #828282;
+    background: linear-gradient(180deg, rgb(220, 220, 220) 10%, rgb(255, 255, 255) 100%);
+}
+
+.footer-subtext {
+    font-size: 10px;
+}
+
+.entire-page-class {
+    background: linear-gradient(0deg, #ffc4a4 0%, white 100%);
+  }
+
+
+/******************************************************************************************/
+
+/* TEXT STYLES */
+
+.form-selection-title {
+    font-weight: bold;
+    margin: 25px 0px 10px 0px;
+    font-size: 16px;
+}
+
+.error-text {
+    color: orange;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 5px;
+
+    animation-name: warning-appear;
+    animation-duration: 0.4s;
+}
+
+.failure-text {
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px;
+
+    animation-name: failure-appear;
+    animation-duration: 0.4s;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: gray;
+    font-size: 14px;
+}
+
+.detail-text {
+    color: black;
+    font-size: 17px;
+    margin: 5px 0px 30px 0px;
+}
+
+
+/******************************************************************************************/
+
+/* MODAL POP-UPS (ESSENTIALS) */
+
+.modal-dialog-box {
+    padding: 30px;
+    margin: 50px 15%;
+    align-self: center;
+
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0px 25px 50px darkslategray;
+
+    animation-name: slide-up;
+    animation-duration: 0.4s;
+    transition: 0.4s;
+}
+
+@media screen and (max-width: 900px) {
+    .modal-dialog-box {
+        border-radius: 0px;
+        margin: 0px;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 100%;
+        padding: 75px;
+        box-shadow: 0px 0px 50px 70px white;
+    }
+}
+
+.close-button {
+    background: none;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 100px;
+    border: none;
+    font-weight: bold;
+
+    background-color: rgba(226,121,56,1);
+    color: white;
+
+    transition: 0.2s;
+}
+
+.close-button:hover {
+    background-color: white;
+    color: black;
+    box-shadow: 0px 0px 20px rgba(226,121,56,1);
+}
+
+/******************************************************************************************/
+
+/* MODAL POPUPS (COLUMN LAYOUT AND HEADER COLUMN) */
+
+.modal-columns-layout {
+    display: flex;
+    gap: 15px;
+    transition: 0.2s;
+    align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+    .modal-columns-layout {
+        display: block;
+        gap: 0px;
+    }
+
+    .modal-column {
+        width: 100% !important;
+        padding: 0px;
+        height: min-content !important;
+    }
+
+    .header-column {
+        background: linear-gradient(180deg, rgba(116,44,0,1) 0%, rgba(226,121,56,1) 60%, #ecba75 100%) !important;
+    }
+}
+
+.modal-column {
+    border-radius: 5px;
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    transition: 0.2s;
+    scale: 97.5%;
+
+    animation: slide-up;
+    animation-duration: 0.5s;
+}
+
+.modal-column:hover {
+   scale: 100%;
+   opacity: 100%;
+}
+
+.header-column {
+    background: linear-gradient(180deg, rgba(116,44,0,1) 0%, rgba(226,121,56,1) 43%, #ffecd2 100%);
+    color: white;
+    text-align: left;
+    height: 500px;
+    position: relative;
+}
+
+
+
+/******************************************************************************************/
+
+/* ANIMATIONS */
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 5%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slide-left {
+    from {
+        opacity: 0;
+        transform: translate3d(-5%, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slide-right {
+    from {
+        opacity: 0;
+        transform: translate3d(5%, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -5%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes grow {
+    from {
+        opacity: 0;
+        transform: scale(90%);
+    }
+    to {
+        opacity: 1;
+        transform: scale(100%);
+    }
+}
+
+@keyframes warning-appear {
+    from {
+          color: yellow;
+          transform: scale(90%);
+    }
+    to {
+          color: orange;
+          transform: scale(100%);
+    }
+}
+
+@keyframes failure-appear {
+    from {
+            color: orange;
+            transform: scale(90%);
+        }
+        to {
+            color: red;
+            transform: scale(100%);
+        }
+}
+
+.loader {
+    opacity: 0%;
+    animation: loader-out;
+    animation-duration: 1.5s;
+}
+
+@keyframes loader-out {
+    0% {opacity: 1;
+        transform: scale(100%);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(100%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(200%);
+    }
+}

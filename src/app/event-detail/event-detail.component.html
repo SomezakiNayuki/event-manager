@@ -1,0 +1,203 @@
+<div class="modal-dialog-box" *ngIf="!purchasingTickets">
+
+  <div class="close-button close-top" (click)="closeEventDetails()">
+    <span>✕</span>
+  </div>
+
+  <br/>
+
+  <div class="header-row">
+
+    <em-modal-cloud-graphic class="graphic-parent"></em-modal-cloud-graphic>
+
+    <div class="event-name-holder">
+
+      <h1>{{event ? event.name : ''}}</h1>
+      <h3>Hosted by
+        <span class="event-host-pill">
+          <i class="user icon"></i>
+          {{event ? event.host : ''}}
+        </span>
+        <span class="detail-text">   {{event ? event.availableTickets : ''}} tickets left</span>
+      </h3>
+    </div>
+
+    <div class="event-type-icon-holder">
+      <em-event-type-icon [type]="event ? event.type : ''"></em-event-type-icon>
+    </div>
+
+  </div>
+
+  <div class="event-description">{{event ? event.description : ''}}</div>
+
+  <div class="columns-layout">
+
+    <div class="modal-column">
+      <div class="detail-label">Event type</div>
+      <div class="detail-text">{{event ? event.type.toUpperCase() : ''}}</div>
+
+      <div class="detail-label">Event starts</div>
+      <div class="detail-text">{{event ? event.startDateTime.split('T')[0].replace('-', '/').replace('-', '/') : ''}}
+                               {{event ? event.startDateTime.split('T')[1].slice(0, -3) : ''}}
+      </div>
+
+      <div class="detail-label">Event ends</div>
+      <div class="detail-text">{{event ? event.endDateTime.split('T')[0].replace('-', '/').replace('-', '/') : ''}}
+                                {{event ? event.endDateTime.split('T')[1].slice(0, -3) : ''}}
+      </div>
+
+      <div class="detail-label">Ticket price</div>
+      <div class="detail-text">${{event ? event.ticketPrice : ''}}</div>
+    </div>
+
+    <div class="modal-column">
+        <div class="detail-label">Artist</div>
+        <div class="detail-text">{{event ? event.artist : ''}}</div>
+
+        <div class="detail-label">Venue name</div>
+        <div class="detail-text">{{event ? event.venue : ''}}</div>
+
+        <div class="detail-label">Venue address</div>
+        <div class="detail-text">{{event ? event.address : ''}}</div>
+    </div>
+
+  </div>
+
+  <button class="ui big orange fluid button" *ngIf="user && !isPastEvent()" (click)="openSeatingMap()">Get tickets</button>
+
+  <div>
+
+    <br/><br/>
+
+    <h2>
+      Comments
+      <div *ngIf="!hostMode">
+        <div class="ui segment">
+          <div class="ui icon input">
+            <input type="text" [(ngModel)]="reviewContent" placeholder="What you want to say?">
+            <button class="ui orange button" (click)="submitComment()">Leave A Comment</button>
+          </div>
+        </div>
+      </div>
+    </h2>
+    <br>
+
+    <div *ngIf="event">
+      <div class="ui middle aligned divided list" *ngFor="let review of event.reviews.reverse()">
+        <div class="item">
+          <img class="ui avatar image" src="https://cdn-icons-png.flaticon.com/512/194/194938.png">
+          <div class="content">
+            {{review.author}}
+          </div>
+        </div>
+        <p>{{review.text}}</p>
+        <div class="right floated content" *ngIf="hostMode">
+          <div class="ui segment">
+            <div class="ui input icon">
+              <input type="text" [(ngModel)]="replyContent" placeholder="What you want to say?">
+              <button class="ui button" (click)="submitReply(review)">Reply</button>
+            </div>
+          </div>
+        </div>
+        <h4>Replies from Event Host</h4>
+        <div class="item" *ngFor="let reply of review.replies">
+          <img class="ui avatar image" src="https://cdn-icons-png.flaticon.com/512/194/194937.png">
+          <div class="content">
+            {{reply.author}}
+            <p>{{reply.text}}</p>
+          </div>
+        </div>
+        <div class="item"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SEATING MAP MODAL -->
+<div class="modal-ticket-selection" *ngIf="purchasingTickets">
+  <div class="ticket-modal-header">
+    <button class="close-button" (click)="closeSeatingMap()">✕</button>
+    <b>{{event.name}}</b> Tickets
+  </div>
+  <em-ticket-selection [event]="event" [user]="user" (closeSeatingMapEvent)="recieveCloseSeatingMapEvent()"></em-ticket-selection>
+</div>
+
+
+<!-------------------------------------------------------------------------------------------------->
+
+<!-- OLD VERSION -->
+
+<!--
+<div *ngIf="isDetail">
+  <div class="ui container">
+    <div class="ui placeholder segment">
+      <button class="ui red button close-button" (click)="closeEventDetails()">Close</button>
+      <div class="ui two column very relaxed stackable grid">
+        <div class="column">
+          <div class="ui form">
+            <br>
+            <br>
+            <img class="ui fluid image" style="border-radius: 30px;"
+              [src]="event ? event.picture : ''">
+            <p>{{event ? event.type : ''}}
+            <p>
+              <b style="font-size: 30px;">{{event ? event.name : ''}}</b>
+              <br>
+            <p><b>By </b>{{event ? event.host : ''}}</p>
+            <p><b>Date and Time </b>{{event ? event.startDateTime.split('T')[0] + ' ' + event.startDateTime.split('T')[1].slice(0, -3) : ''}}</p>
+            <p><b>Location </b>{{event ? event.venue : ''}}</p>
+          </div>
+        </div>
+        <div class="top aligned column">
+          <h2>
+            <br>
+            Comments
+            <div *ngIf="!hostMode">
+              <div class="ui segment">
+                <div class="ui icon input">
+                  <input type="text" [(ngModel)]="reviewContent" placeholder="What you want to say?">
+                  <button class="ui orange button" (click)="submitComment()">Leave A Comment</button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="hostMode">
+              <div class="ui segment">
+                <div class="ui input icon">
+                  <input type="text" [(ngModel)]="replyContent" placeholder="What you want to reply?">
+                </div>
+              </div>
+            </div>
+          </h2>
+          <br>
+
+          <div *ngIf="event">
+            <div class="ui middle aligned divided list" *ngFor="let review of event.reviews.reverse()">
+              <div class="item">
+                <img class="ui avatar image" src="https://cdn-icons-png.flaticon.com/512/194/194938.png">
+                <div class="content">
+                  {{review.author}}
+                </div>
+              </div>
+              <p>{{review.text}}</p>
+              <button class="ui button" (click)="submitReply(review)" *ngIf="hostMode">Reply</button>
+              <h4>Replies from Event Host</h4>
+              <div class="item" *ngFor="let reply of review.replies">
+                <img class="ui avatar image" src="https://cdn-icons-png.flaticon.com/512/194/194937.png">
+                <div class="content">
+                  {{reply.author}}
+                  <p>{{reply.text}}</p>
+                </div>
+              </div>
+              <div class="item">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->

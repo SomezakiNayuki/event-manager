@@ -1,0 +1,127 @@
+<!-- NAV BAR -->
+<nav>
+
+  <div class="{{ user ? user.accountType : 'customer' }} nav-bar-container">
+    <div class="ui secondary menu">
+
+      <div class="logo-container">
+        <img class="logo-image" alt="dream-events-logo" src="../../assets/DREAM-EVENTS-LOGO.png"/>
+      </div>
+
+      <a class="host-hub-header-text" *ngIf="user && user.accountType === 'host'">
+        <i class="hdd alternate big icon"></i>
+        HOST HUB
+      </a>
+      <div class="item" *ngIf="!user || user && user.accountType !== 'host'">
+        <div class="ui icon input">
+          <i class="search icon"></i>
+          <input type="text" [(ngModel)]="searchContent" placeholder="Find an event">
+        </div>
+      </div>
+
+      <!-- DESKTOP MENU ITEMS -->
+      <div class="right menu" id="desktop-menu">
+        <div class="ui slider checkbox" *ngIf="false">
+          <input type="checkbox" (click)="changeInterfaceMode()">
+          <label>{{isDetail ? 'Detail' : 'Brief'}}</label>
+        </div>
+        <a class="item" *ngIf="!user" (click)="openRegisterModal()">
+          <h2 class="ui header">Register</h2>
+        </a>
+        <a class="item" *ngIf="!user" (click)="openLoginModal()">
+          <h2 class="ui header">Login</h2>
+        </a>
+        <a class="item {{isBrowseActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openBrowsePage()">
+          <h2 class="ui header">Explore</h2>
+        </a>
+        <a class="item {{isTicketsActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openTicketsPage()">
+          <h2 class="ui header">My Tickets</h2>
+        </a>
+        <a class="item icon {{isMessagesActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openMessagesPage()">
+          <i class="big bell outline icon"></i>
+        </a>
+        <a class="item {{isEventsActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'host'" (click)="openEventsPage()">
+          <h2 class="ui header">My Events</h2>
+        </a>
+        <a class="item icon account-icon {{isAccountActive ? 'active' : ''}}" *ngIf="user" (click)="openAccountPage()">
+          <i class="big user circle outline icon"></i>
+        </a>
+        <a class="item" *ngIf="user" (click)="logout()">
+          <h2 class="ui header">Log Out</h2>
+        </a>
+      </div>
+
+      <!-- MOBILE MENU ITEMS -->
+      <div id="mobile-menu" class="right menu">
+        <a class="item hamburger-button" (click)="toggleSideBar()">
+          <i class="big bars icon"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</nav>
+
+<!-- HAMBURGER SIDE-MENU -->
+<div id="MobileNav" class="mobile-nav hide">
+
+  <div class="ui secondary vertical menu">
+    <div class="ui icon button" (click)="toggleSideBar()">
+      <i class="left chevron icon"></i>
+    </div>
+    <br/><br/>
+    <div class="ui slider checkbox" *ngIf="false">
+      <input type="checkbox" (click)="changeInterfaceMode()">
+      <label>{{isDetail ? 'Detail' : 'Brief'}}</label>
+    </div>
+    <a class="item" *ngIf="!user" (click)="openRegisterModal()">
+      <h2 class="ui header">Register</h2>
+    </a>
+    <a class="item" *ngIf="!user" (click)="openLoginModal()">
+      <h2 class="ui header">Login</h2>
+    </a>
+    <a class="item {{isBrowseActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openBrowsePage()">
+      <h2 class="ui header">Explore</h2>
+    </a>
+    <a class="item {{isTicketsActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openTicketsPage()">
+      <h2 class="ui header">My Tickets</h2>
+    </a>
+    <a class="item {{isMessagesActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'customer'" (click)="openMessagesPage()">
+      <h2 class="ui header">My Messages</h2>
+    </a>
+    <a class="item {{isEventsActive ? 'active' : ''}}" *ngIf="user && user.accountType === 'host'" (click)="openEventsPage()">
+      <h2 class="ui header">My Events</h2>
+    </a>
+    <a class="item {{isAccountActive ? 'active' : ''}}" *ngIf="user" (click)="openAccountPage()">
+      <h2 class="ui header">Account</h2>
+    </a>
+    <a class="item" *ngIf="user" (click)="logout()">
+      <h2 class="ui header">Log Out</h2>
+    </a>
+  </div>
+</div>
+
+<br/><br/><br/><br/><br/>
+
+<em-authentication (loginEvent)="receiveLoginEvent($event)" [activate]="weekUpAuthenticationInitialization"></em-authentication>
+
+<em-search [user]="user" [isDetail]="isDetail" [search]="searchContent" *ngIf="searchContent"></em-search>
+
+<br/><br/><br/><br/>
+
+
+
+<em-browse [user]="user" [isDetail]="isDetail" *ngIf="user ? (user.accountType === 'customer' ? isBrowseActive : false) : true"></em-browse>
+<em-tickets [user]="user" *ngIf="user ? (user.accountType === 'customer' ? isTicketsActive : false) : false"></em-tickets>
+<em-message [user]="user" *ngIf="user ? (user.accountType === 'customer' ? isMessagesActive : false) : false"></em-message>
+<em-account [user]="user" *ngIf="user ? (isAccountActive ? true : false) : false"></em-account>
+<em-events [user]="user" [isDetail]="isDetail" *ngIf="user ? (user.accountType === 'host' ? isEventsActive : false) : false"></em-events>
+
+<footer>
+  DREAM EVENTS &copy; 2022
+  <br/>
+  <div class="footer-subtext">
+      UNSW COMP3900 Computer Science Project • Designed and developed by Dream Team
+  </div>
+</footer>

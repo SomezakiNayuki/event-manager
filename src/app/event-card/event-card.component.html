@@ -1,0 +1,52 @@
+<div class="event-card">
+  <div class="event-type-icon">
+    <em-event-type-icon [type]="event.type"></em-event-type-icon>
+    <br/>
+  </div>
+  <div class="tickets-left-text">{{event.availableTickets}} tickets left</div>
+
+  <h3>{{event.name}}</h3>
+
+  <span class="datetime-title">Hosted by  </span>
+
+  <span class="host-name">
+    <i class="user icon"></i>{{event.host}}
+  </span>
+
+  <br/><br/>
+
+  <div class="datetime-text">
+    {{event.startDateTime.split('T')[0]}}
+  </div>
+  <div class="datetime-text">
+    {{event.startDateTime.split('T')[1].slice(0, -3)}}
+  </div>
+</div>
+
+
+<!-- 
+<div *ngIf="false">
+  <a>
+    <div class="ui card">
+      <div class="image">
+        <img [src]="event.picture">
+      </div>
+      <div class="content">
+        <a class="header">{{event.name}}</a>
+        <div class="meta">
+          <span class="date">{{event.startDateTime.split('T')[0] + ' ' + event.startDateTime.split('T')[1].slice(0, -3)}}</span>
+        </div>
+        <div class="description">
+          {{event.host}}
+        </div>
+      </div>
+      <div class="extra content">
+        <a>
+          <i class="home icon"></i>
+          {{event.venue}}
+        </a>
+      </div>
+    </div>
+  </a>
+</div>
+-->

@@ -1,0 +1,102 @@
+<div class="ui container">
+
+  <div class="graphic">
+    <em-modal-cloud-graphic></em-modal-cloud-graphic>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header-row" *ngIf="user">
+    <div>
+      Welcome back,
+      <span class="username-text">
+        <i class="user icon"></i>
+        {{user.firstName}}
+      </span>
+      !
+    </div>
+
+    <button class="huge ui grey icon button" (click)="fetchEvents()" *ngIf="false">
+      <i class="refresh icon"></i>
+    </button>
+  </div>
+
+  <div class="header-row" *ngIf="!user">
+    Welcome to Dream Events
+    <button class="huge ui grey icon button" (click)="fetchEvents()" *ngIf="false">
+      <i class="refresh icon"></i>
+    </button>
+  </div>
+
+
+  <!-- THIS MONTHS EVENTS -->
+  <div class="browse-category" *ngIf="!user">
+    <h2><i class="calendar alternate icon"></i> On this month</h2>
+
+    <div class="ui active loader"></div>
+
+    <div class="events-row">
+      <div *ngFor="let event of thisMonthEventList">
+
+        <em-event-card [event]="event" (click)="openEventDetails(event)" [isDetail]="isDetail" *ngIf="event.availableTickets !== '0'"></em-event-card>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- RECOMMENDED EVENTS -->
+  <div class="browse-category" *ngIf="user">
+    
+    <div class="recommend-flex">
+      <h2><i class="certificate icon"></i> Our top recommendations for you</h2>
+      <div class="refresh-button" (click)="fetchRecommendedEvents()">
+        Refresh recommendations
+      </div>
+    </div>
+
+    <div class="ui active loader"></div>
+
+    <div class="events-row" *ngIf="true">
+      <div *ngFor="let event of recommendedEventList">
+
+        <em-event-card [event]="event" (click)="openEventDetails(event)" [isDetail]="isDetail"></em-event-card>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- UPCOMING EVENTS -->
+  <div class="browse-category" *ngIf="user">
+    <h2><i class="calendar alternate icon"></i> Coming up</h2>
+
+    <div class="events-row">
+      <div *ngFor="let event of upcomingEventList">
+
+        <em-event-card [event]="event" (click)="openEventDetails(event)" [isDetail]="isDetail"></em-event-card>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PAST EVENTS -->
+  <div class="browse-category" *ngIf="user">
+    <h2><i class="angle double left icon"></i> Past events</h2>
+
+    <div class="events-row">
+      <div *ngFor="let event of pastEventList">
+
+        <em-event-card [event]="event" (click)="openEventDetails(event)" [isDetail]="isDetail"></em-event-card>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- EVENT DETAILS MODAL -->
+<div class="modal fade" id="EventCardModal">
+    <em-event-detail [isDetail]="isDetail" [event]="chosenEvent" (fetchEvent)="receiveFetchEvent($event)" [user]="user"></em-event-detail>
+</div>

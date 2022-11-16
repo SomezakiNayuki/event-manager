@@ -1,0 +1,410 @@
+<!-- LIST PAGE -->
+<div class="ui container" *ngIf=isListActive>
+  <h1 class="header-row">
+    <div>My Events</div>
+
+    <div>
+      <button class="huge ui orange icon button" (click)="openEventCreationDialog()">
+        <i class="plus icon"></i>
+      </button>
+      <button class="huge ui grey icon button" (click)="fetchEvents()" *ngIf="false">
+        <i class="refresh icon"></i>
+      </button>
+    </div>
+  </h1>
+
+  <br/>
+
+  <div class="section-title">UPCOMING EVENTS</div>
+  <div class="ui divider"></div>
+  <br />
+  <div *ngFor="let event of upcomingEventList">
+    <div class="event-row" (click)="openEventDetails(event)">
+      <div class="event-details-preview">
+        <em-event-type-icon [type]="event.type"></em-event-type-icon>
+        {{event.name}}
+        <div class="days-countdown-text">{{event.startDateTime.split('T')[0] + ' ' + event.startDateTime.split('T')[1].slice(0, -3)}}</div>
+      </div>
+      <div>
+        <i class="right chevron icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <br />
+
+  <div class="section-title">PAST EVENTS YOU HOSTED</div>
+  <div class="ui divider"></div>
+  <br />
+  <div *ngFor="let event of pastEventList">
+    <div class="event-row" (click)="openEventDetails(event)">
+      <div class="event-details-preview">
+        <em-event-type-icon [type]="event.type"></em-event-type-icon>
+        {{event.name}}
+        <div class="days-countdown-text">{{event.startDateTime.split('T')[0] + ' ' + event.startDateTime.split('T')[1].slice(0, -3)}}</div>
+      </div>
+      <div>
+        <i class="right chevron icon"></i>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- EVENT DETAILS PAGE -->
+<div class="ui container" *ngIf="isEventDetailsActive">
+  <button class="ui left labeled icon button" (click)="closeEventDetails()">
+    <i class="left arrow icon"></i>
+    Back
+  </button>
+
+  <br />
+  <br />
+  <br />
+
+  <em-event-detail-host [event]="chosenEvent" [isDetail]="isDetail"></em-event-detail-host>
+
+  <br />
+
+  <h3 class="functions-text">Event Host Functions</h3>
+
+  <div class="event-buttons-row">
+    <button class="ui fluid orange large labeled icon button" (click)="openBroadcastMessage()">
+      Broadcast Message
+      <i class="volume up icon"></i>
+    </button>
+
+    <button class="ui fluid large labeled icon button" (click)="openSeatingMap()">
+      Seating Map
+      <i class="eye icon"></i>
+    </button>
+
+    <button class="ui fluid red large labeled icon button" (click)="cancelEvent()">
+      Cancel Event
+      <i class="x icon"></i>
+    </button>
+  </div>
+
+  <br />
+  <h3 class="functions-text">Attendee Comments</h3>
+
+  <div class="event-reviews-box">
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="What do you want to reply?" [(ngModel)]="replyContent">
+      </div>
+    </div>
+    <br/><br/>
+    <div *ngFor="let review of chosenEvent.reviews.reverse()">
+      <div class="review">
+        <div class="review-poster">
+          <i class="user icon"></i>
+          {{review.author}}
+        </div>
+        <div class="review-content" (mouseenter)="displayReplies()" (mouseleave)="closeReplies()">
+          {{review.text}}
+        </div>
+        <div class="right floated content">
+          <div class="ui button" (click)="submitReply(review)">Reply</div>
+        </div>
+      </div>
+      <div *ngIf="review.replies.length != 0">
+        <div class="review-reply" *ngFor="let reply of review.replies">
+          <b>HOST {{reply.author}} REPLY:</b>
+          <span>{{reply.text}}</span>
+        </div>
+      </div>
+  </div>
+
+  </div>
+
+</div>
+
+<!-- EVENT CREATION PAGES -->
+<div class="ui container" *ngIf="isCreateEventActive">
+
+  <button class="ui left labeled icon button" (click)="closeEventCreationDialog()">
+    <i class="x icon"></i>
+    Cancel
+  </button>
+  <h1 class="centered-element">New Event</h1>
+
+  <br/>
+
+  <!-- EVENT TYPE SELECTION (1) -->
+  <div class="centered-element" *ngIf="isSelectEventTypeScreenActive">
+
+    <div class="form-selection-title">What kind of event is this?</div>
+    <br/>
+
+    <div class="event-type-button" (click)="selectEventType('concert')">
+      <i class="music icon"></i>Concert
+    </div>
+
+    <div class="event-type-button" (click)="selectEventType('theatre')">
+      <i class="star icon"></i>Theatre
+    </div>
+
+    <div class="event-type-button" (click)="selectEventType('sport')">
+      <i class="basketball ball icon"></i>Sport
+    </div>
+
+  </div>
+
+  <!-- EVENT DETAILS INPUT (2) -->
+  <div class="centered-element" *ngIf="isEnterEventDetailsScreenActive">
+
+    <div class="form-selection-title">Event Name</div>
+
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Event Name" [(ngModel)]="eventName">
+      </div>
+      <div class="error-text" *ngIf="invalidEventName"><i class="exclamation circle icon"></i>Event must have an name
+      </div>
+    </div>
+
+    <div class="form-selection-title">Description (optional)</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Description" [(ngModel)]="eventDescription">
+      </div>
+    </div>
+
+    <div class="form-selection-title">Ticket Price</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="number" placeholder="Ticket Price" [(ngModel)]="eventTicketPrice">
+      </div>
+      <div class="error-text" *ngIf="invalidEventTicketPrice"><i class="exclamation circle icon"></i>Event must have a ticket price greater than 0
+      </div>
+    </div>
+
+    <div class="form-selection-title">Venue Name</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Venue name" [(ngModel)]="eventVenue">
+      </div>
+      <div class="error-text" *ngIf="invalidEventVenue"><i class="exclamation circle icon"></i>Event must have a venue
+      </div>
+    </div>
+
+    <div class="form-selection-title">Venue Address</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Venue address" [(ngModel)]="eventAddress">
+      </div>
+      <div class="error-text" *ngIf="invalidEventAddress"><i class="exclamation circle icon"></i>Event must have a venue address
+      </div>
+    </div>
+
+    <div class="form-selection-title">Artist</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Artist" [(ngModel)]="eventArtist">
+      </div>
+      <div class="error-text" *ngIf="invalidEventArtist"><i class="exclamation circle icon"></i>Event must have an
+        artist</div>
+    </div>
+
+    <div class="form-selection-title">Event Start</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="datetime-local" placeholder="Date" [(ngModel)]="eventStartDateTime">
+      </div>
+      <div class="error-text" *ngIf="invalidStartDateTime"><i class="exclamation circle icon"></i>Event must start on a future date</div>
+    </div>
+
+    <div class="form-selection-title">Event End</div>
+    <div class="ui center aligned container">
+      <div class="ui fluid input icon">
+        <input type="datetime-local" placeholder="Date" [(ngModel)]="eventEndDateTime">
+      </div>
+      <div class="error-text" *ngIf="invalidEndDateTime"><i class="exclamation circle icon"></i>Event must end after start date</div>
+    </div>
+
+    <div class="form-selection-title" *ngIf="false">Event Picture (optional)</div>
+    <div class="ui center aligned container" *ngIf="false">
+      <div class="ui fluid input icon">
+        <input type="text" placeholder="Event Picture" [(ngModel)]="eventPicture">
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="centered-element">
+      <button class="large ui orange button" (click)="submitEventDetails()">
+        Continue
+        <i class="right chevron icon"></i>
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EVENT CREATION CONFIRMATION SCREEN -->
+<div class="ui container" *ngIf="isConfirmEventActive">
+
+  <button class="ui left labeled icon button" (click)="closeEventCreationDialog()">
+    <i class="x icon"></i>
+    Cancel
+  </button>
+  <h1 class="centered-element">Confirm Details</h1>
+
+  <div class="event-details-container">
+
+    <div class="event-details-header">
+
+        <div class="event-type-icon-container">
+            <em-event-type-icon [type]="eventType"></em-event-type-icon>
+        </div>
+
+        <div>
+            <h1>{{eventName}}</h1>
+            <div class="detail-label">{{eventDescription}}</div>
+        </div>
+
+    </div>
+
+    <div class="ui divider"></div>
+
+    <div class="details-columns-layout">
+        <div class="details-column">
+            <div class="detail-label">Event start date</div>
+            <div class="detail-text">{{eventStartDateTime.split('T')[0].replace('-', '/').replace('-', '/')}}</div>
+
+            <div class="detail-label">Event start time</div>
+            <div class="detail-text">{{eventStartDateTime.split('T')[1]}}</div>
+
+            <div class="detail-label">Event end date</div>
+            <div class="detail-text">{{eventEndDateTime.split('T')[0].replace('-', '/').replace('-', '/')}}</div>
+
+            <div class="detail-label">Event end time</div>
+            <div class="detail-text">{{eventEndDateTime.split('T')[1]}}</div>
+
+            <div class="detail-label">Ticket price</div>
+            <div class="detail-text">${{eventTicketPrice}}</div>
+        </div>
+
+        <div class="details-column">
+            <div class="detail-label">Event type</div>
+            <div class="detail-text">{{eventType.toUpperCase()}}</div>
+
+            <div class="detail-label">Artist</div>
+            <div class="detail-text">{{eventArtist}}</div>
+
+            <div class="detail-label">Venue name</div>
+            <div class="detail-text">{{eventVenue}}</div>
+
+            <div class="detail-label">Venue address</div>
+            <div class="detail-text">{{eventAddress}}</div>
+        </div>
+    </div>
+
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+  <div class="centered-element">
+    <button class="large ui orange button" (click)="createEvent()">
+      <i class="plus icon"></i>
+      Create Event
+    </button>
+  </div>
+
+</div>
+
+
+<!-- BROADCAST MESSAGE MODAL -->
+<div class="modal fade" id="BroadcastMessageModal">
+
+  <div class="modal-dialog-box">
+
+    <div class="modal-columns-layout">
+
+      <div class="modal-column header-column">
+
+        <em-modal-cloud-graphic></em-modal-cloud-graphic>
+
+        <button class="close-button" (click)="closeBroadcastMessage()">
+          ✕
+        </button>
+
+        <h1>Broadcast a message</h1>
+        <h3>Type a message you want all ticket holders to see in their inbox, and we'll handle the rest.</h3>
+      </div>
+
+      <!-- BROADCAST UI -->
+      <div class="modal-column">
+
+        <br/>
+
+        <h3>What would you like to broadcast?</h3>
+
+        <br/>
+
+        <textarea class="broadcast-message-input" [(ngModel)]="broadcastMessage"></textarea>
+
+        <br/><br/>
+
+        <button class="ui orange button" (click)="submitBroadcastMessage()">Submit</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- SEATING MAP MODAL -->
+<div class="modal fade" id="SeatingMapModal">
+
+  <div class="modal-dialog-box">
+
+    <button class="close-button" (click)="closeSeatingMap()">
+      ✕
+    </button>
+
+    <h1>Seating Map</h1>
+
+    <!-- SEAT UI -->
+    <div *ngIf="chosenEvent">
+
+      <div class="tickets-screen">
+        <div class="ticket-map">
+          <div *ngFor="let ticket of chosenEvent.tickets" id="ticket.id">
+            <div>
+
+              <!-- AVAILABLE -->
+              <div class="seat available interactive" *ngIf="ticket.status === 'available'">
+                {{ticket.seatRow}}
+                {{ticket.seatNumber}}
+              </div>
+
+              <!-- BOOKED -->
+              <div class="seat booked interactive" *ngIf="ticket.status === 'booked'">
+                {{ticket.seatRow}}
+                {{ticket.seatNumber}}
+              </div>
+
+              <!-- RESERVED -->
+              <div class="seat reserved interactive" *ngIf="ticket.status === 'reserved'">
+                {{ticket.seatRow}}
+                {{ticket.seatNumber}}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

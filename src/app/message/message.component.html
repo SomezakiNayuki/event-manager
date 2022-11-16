@@ -1,0 +1,16 @@
+<div class="ui container">
+  <h1>Notifications</h1>
+  <br/>
+
+  <div class="ui active loader"></div>
+  
+  <div *ngFor="let message of user.messages">
+    <div class="message-box">
+      <div class="message-font">
+        <i class="bell outline icon"></i>
+        {{message.message}}
+      </div>
+    </div>
+  </div>
+
+</div>

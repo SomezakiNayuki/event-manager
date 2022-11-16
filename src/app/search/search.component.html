@@ -1,0 +1,30 @@
+<div class="search-results">
+
+  <h2>Here's what we found...</h2>
+
+  <div class="search-results-list">
+
+    <div *ngFor="let event of searchEvents()">
+
+      <div class="search-result" (click)="openEventDetails(event)">
+        <div class="event-details-preview">
+          <em-event-type-icon [type]="event.type"></em-event-type-icon>
+          {{event.name}}
+          <div class="date-text">{{event.startDateTime.split('T')[0] + ' ' + event.startDateTime.split('T')[1].slice(0, -3)}}</div>
+          <div class="description-text">{{event.description}}</div>
+        </div>
+        <div>
+          <i class="right chevron icon"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Event detail Modal -->
+<div class="modal fade" id="EventCardModal">
+  <div class="modal-body">
+    <em-event-detail [isDetail]="isDetail" [event]="chosenEvent" (fetchEvent)="receiveFetchEvent($event)" [hostMode]="isHostMode" [user]="user"></em-event-detail>
+  </div>
+</div>
